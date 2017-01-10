@@ -233,7 +233,9 @@ func (s *Siego) runFile() error {
 // Do a delay between requests
 func (s *Siego) doDelay() {
 	if s.delay > 0 && !s.benchmark {
-		time.Sleep(time.Duration(s.delay) * time.Second)
+		delay := float64(rand.Intn(s.delay*1000)) / 1000
+
+		time.Sleep(time.Duration(delay) * time.Second)
 	}
 }
 
