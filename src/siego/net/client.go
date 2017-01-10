@@ -5,11 +5,12 @@ import (
 	"time"
 )
 
-// Siego client
+// Client - Siego client
 type Client struct {
 	client *http.Client
 }
 
+// NewClient - Creates client
 func NewClient() *Client {
 	c := Client{}
 
@@ -18,6 +19,7 @@ func NewClient() *Client {
 	return &c
 }
 
+// Do - Makes request
 func (c *Client) Do(r *Request) *Response {
 	start := time.Now()
 

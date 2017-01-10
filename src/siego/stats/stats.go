@@ -10,7 +10,7 @@ import (
 	"../net"
 )
 
-// Siego stats structure
+// Stats - Siego stats structure
 type Stats struct {
 	start     time.Time
 	longest   time.Duration
@@ -24,7 +24,7 @@ type Stats struct {
 	times     []float64
 }
 
-// Constructor
+// NewStats - Creates statistics object
 func NewStats() *Stats {
 	s := Stats{
 		codes: make(map[int]int),
@@ -34,7 +34,7 @@ func NewStats() *Stats {
 	return &s
 }
 
-// Track response
+// AddResponse - Track response
 func (s *Stats) AddResponse(r *net.Response) {
 	s.total = s.total + 1
 	s.totalTime = s.totalTime + r.Duration
@@ -68,7 +68,7 @@ func (s *Stats) AddResponse(r *net.Response) {
 	}
 }
 
-// Converts object to string
+// String - Converts object to string
 func (s *Stats) String() string {
 	return s.getMainTable() + s.getResponseCodesTable() + s.getPercentilesTable()
 }

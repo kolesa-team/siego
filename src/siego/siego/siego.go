@@ -14,7 +14,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-// Main Siego object
+// Siego - Main Siego object
 type Siego struct {
 	url, file, log, time, userAgent, contentType string
 	timeLimit                                    time.Duration
@@ -25,7 +25,7 @@ type Siego struct {
 	stats                                        *stats.Stats
 }
 
-// Constructor
+// NewSiego - Constructor
 func NewSiego(c *cli.Context) *Siego {
 	s := Siego{
 		file:        c.String("file"),
@@ -49,7 +49,7 @@ func NewSiego(c *cli.Context) *Siego {
 	return &s
 }
 
-// Validates input parametes
+// Validate - Validates input parametes
 func (s *Siego) Validate() (err error) {
 	if s.file == "" && s.url == "" {
 		return fmt.Errorf("You should specify 'url' or 'file' option.")
@@ -76,7 +76,7 @@ func (s *Siego) Validate() (err error) {
 	return nil
 }
 
-// Runs timed load test
+// Run - Runs timed load test
 func (s *Siego) Run() {
 	if s.timeLimit.Seconds() > 0 {
 		done := make(chan bool)
@@ -108,7 +108,7 @@ func (s *Siego) doRun() {
 	}
 }
 
-// Returns stats for test and optionally writes to log
+// GetStats - Returns stats for test and optionally writes to log
 func (s *Siego) GetStats() {
 	data := fmt.Sprintf("%s\r\n", s.stats)
 	if s.log != "" {

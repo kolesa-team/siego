@@ -5,14 +5,14 @@ import (
 	"strings"
 )
 
-// HTTP request structure
+// Request - HTTP request structure
 type Request struct {
 	httpRequest                         *http.Request
 	method, url, userAgent, contentType string
 	headers                             []string
 }
 
-// Creates request object with method and url parts set
+// NewRequest - Creates request object with method and url parts set
 func NewRequest(method, url, params string) (*Request, error) {
 	var err error
 
@@ -22,22 +22,22 @@ func NewRequest(method, url, params string) (*Request, error) {
 	return &r, err
 }
 
-// Sets User-Agent property
+// UserAgent - Sets User-Agent property
 func (rq *Request) UserAgent(userAgent string) {
 	rq.userAgent = userAgent
 }
 
-// Sets Content-Type property
+// ContentType - Sets Content-Type property
 func (rq *Request) ContentType(contentType string) {
 	rq.contentType = contentType
 }
 
-// Sets request headers
+// Headers - Sets request headers
 func (rq *Request) Headers(headers []string) {
 	rq.headers = headers
 }
 
-// Returns associated HTTP request with headers set
+// GetHttpRequest - Returns associated HTTP request with headers set
 func (rq *Request) GetHttpRequest() *http.Request {
 	if rq.userAgent != "" {
 		rq.httpRequest.Header.Set("User-Agent", rq.userAgent)
