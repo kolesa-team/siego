@@ -9,6 +9,9 @@ $(CURDIR)/out/$(APP_NAME): $(CURDIR)/src/main.go
 
 dep-install:
 	go get github.com/codegangsta/cli
+	
+install:
+	cp $(CURDIR)/out/$(APP_NAME) /usr/local/bin/$(APP_NAME)
 
 fmt:
 	gofmt -s=true -w $(CURDIR)/src
