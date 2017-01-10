@@ -93,7 +93,7 @@ func (s *Stats) getMainTable() (result string) {
 	}
 	rows := map[string]interface{}{
 		"Transactions":            fmt.Sprintf("%0.0d", s.total),
-		"Availability":            fmt.Sprintf("%0.4f", float64(s.total)/(float64(s.total)+float64(s.fail))),
+		"Availability":            fmt.Sprintf("%0.2f%%", float64(s.total)/(float64(s.total)+float64(s.fail))*100),
 		"Elapsed time":            fmt.Sprintf("%0.4fs", elapsed.Seconds()),
 		"Data transferred":        fmt.Sprintf("%0.4fMb", float64(s.bytes)/(1024*1024)),
 		"Response time":           fmt.Sprintf("%0.4fs", elapsed.Seconds()/float64(s.total)),
