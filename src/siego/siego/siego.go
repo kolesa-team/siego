@@ -277,7 +277,7 @@ func (s *Siego) requestFromLine(line string) (req *net.Request, err error) {
 
 // Shuffles slice
 func (s *Siego) shuffle(slice []string) []string {
-	for i, _ := range slice {
+	for i := range slice {
 		j := rand.Intn(i + 1)
 		slice[i], slice[j] = slice[j], slice[i]
 	}
