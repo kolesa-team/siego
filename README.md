@@ -44,30 +44,30 @@ Optionally to create Debian package
 	
 ## Statistics output example
 
-                  Transactions: 1000
-                  Availability: 0.7669
-                  Elapsed time: 9.0610s
+                  Transactions: 14
+                  Availability: 82.35%
+                  Elapsed time: 1.5609s
               Data transferred: 0.0000Mb
-                 Response time: 0.0091s
-              Transaction rate: 110.3634/s
+                 Response time: 0.1115s
+              Transaction rate: 8.9691/s
                     Throughput: 0.0000Mb/s
-                   Concurrency: 0.3878
-       Successful transactions: 696
-           Failed transactions: 304
-           Longest transaction: 0.0147s
-          Shortest transaction: 0.0000s
-    
+                   Concurrency: 0.0141
+       Successful transactions: 11
+           Failed transactions: 3
+           Longest transaction: 0.0038s
+          Shortest transaction: 0.0001s
+
 
                 Response codes: 
-                      HTTP_200: 696
-    
+                      HTTP_200: 11
+
      Response time percentiles: 
-                           10%: 0.0002s
-                           20%: 0.0004s
+                           10%: 0.0003s
+                           20%: 0.0006s
                            30%: 0.0007s
-                           40%: 0.0011s
-                           50%: 0.0022s
-                           60%: 0.0035s
-                           70%: 0.0045s
-                           80%: 0.0062s
-                           90%: 0.0093s
+                           40%: 0.0008s
+                           50%: 0.0010s
+                           60%: 0.0016s
+                           70%: 0.0021s
+                           80%: 0.0033s
+                           90%: 0.0035s
