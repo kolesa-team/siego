@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// HTTP request structure
 type Request struct {
 	httpRequest                         *http.Request
 	method, url, userAgent, contentType string
@@ -22,31 +23,31 @@ func NewRequest(method, url, params string) (*Request, error) {
 }
 
 // Sets User-Agent property
-func (this *Request) UserAgent(userAgent string) {
-	this.userAgent = userAgent
+func (rq *Request) UserAgent(userAgent string) {
+	rq.userAgent = userAgent
 }
 
 // Sets Content-Type property
-func (this *Request) ContentType(contentType string) {
-	this.contentType = contentType
+func (rq *Request) ContentType(contentType string) {
+	rq.contentType = contentType
 }
 
 // Sets request headers
-func (this *Request) Headers(headers []string) {
-	this.headers = headers
+func (rq *Request) Headers(headers []string) {
+	rq.headers = headers
 }
 
 // Returns associated HTTP request with headers set
-func (this *Request) GetHttpRequest() *http.Request {
-	if this.userAgent != "" {
-		this.httpRequest.Header.Set("User-Agent", this.userAgent)
+func (rq *Request) GetHttpRequest() *http.Request {
+	if rq.userAgent != "" {
+		rq.httpRequest.Header.Set("User-Agent", rq.userAgent)
 	}
 
-	if this.contentType != "" {
-		this.httpRequest.Header.Set("Content-Type", this.contentType)
+	if rq.contentType != "" {
+		rq.httpRequest.Header.Set("Content-Type", rq.contentType)
 	}
 
-	for _, header := range this.headers {
+	for _, header := range rq.headers {
 		split := strings.Split(header, ":")
 
 		if len(split) == 2 {
@@ -54,10 +55,10 @@ func (this *Request) GetHttpRequest() *http.Request {
 			split[1] = strings.Trim(split[1], " ")
 
 			if split[0] != "" && split[1] != "" {
-				this.httpRequest.Header.Set(split[0], split[1])
+				rq.httpRequest.Header.Set(split[0], split[1])
 			}
 		}
 	}
 
-	return this.httpRequest
+	return rq.httpRequest
 }

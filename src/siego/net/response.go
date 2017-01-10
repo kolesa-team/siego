@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// HTTP response structure
 type Response struct {
 	HttpResponse *http.Response
 	Duration     time.Duration

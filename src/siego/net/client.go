@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// Siego client
 type Client struct {
 	client *http.Client
 }
@@ -17,10 +18,10 @@ func NewClient() *Client {
 	return &c
 }
 
-func (this *Client) Do(r *Request) *Response {
+func (c *Client) Do(r *Request) *Response {
 	start := time.Now()
 
-	resp, err := this.client.Do(r.GetHttpRequest())
+	resp, err := c.client.Do(r.GetHttpRequest())
 
 	response := Response{
 		HttpResponse: resp,
