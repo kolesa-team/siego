@@ -11,10 +11,12 @@ type Client struct {
 }
 
 // NewClient - Creates client
-func NewClient() *Client {
+func NewClient(timeout int) *Client {
 	c := Client{}
 
-	c.client = http.DefaultClient
+	c.client = &http.Client{
+		Timeout:time.Duration(timeout) * time.Second,
+	}
 
 	return &c
 }

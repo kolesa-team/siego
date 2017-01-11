@@ -18,10 +18,9 @@ import (
 type Siego struct {
 	url, file, log, time, userAgent, contentType string
 	timeLimit                                    time.Duration
-	get, post, internet, benchmark               bool
-	concurrent, delay, reps                      int
+	get, post, internet, benchmark, xml          bool
+	concurrent, delay, reps, timeout             int
 	header                                       []string
-	client                                       *net.Client
 	stats                                        *stats.Stats
 }
 
@@ -37,12 +36,13 @@ func NewSiego(c *cli.Context) *Siego {
 		header:      c.StringSlice("header"),
 		get:         c.Bool("get"),
 		post:        c.Bool("post"),
+		xml:         c.Bool("xml"),
 		internet:    c.Bool("internet"),
 		benchmark:   c.Bool("benchmark"),
 		concurrent:  c.Int("concurrent"),
 		delay:       c.Int("delay"),
 		reps:        c.Int("reps"),
-		client:      net.NewClient(),
+		timeout:     c.Int("timeout"),
 		stats:       stats.NewStats(),
 	}
 
@@ -110,7 +110,13 @@ func (s *Siego) doRun() {
 
 // GetStats - Returns stats for test and optionally writes to log
 func (s *Siego) GetStats() {
-	data := fmt.Sprintf("%s\r\n", s.stats)
+	data := ""
+
+	if s.xml {
+		data = s.stats.Xml()
+	} else {
+		data = fmt.Sprintf("%s\r\n", s.stats.String())
+	}
 	if s.log != "" {
 		if f, e := os.OpenFile(s.log, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644); e == nil {
 			defer f.Close()
@@ -143,19 +149,23 @@ func (s *Siego) runUrl() (err error) {
 	req.Headers(s.header)
 
 	for i := 0; i < s.concurrent; i++ {
-		go func(c chan *net.Response, r *net.Request) {
+		go func(c chan *net.Response, r *net.Request, id int) {
+			client := net.NewClient(s.timeout)
+
 			if s.reps > 0 {
 				for j := 0; j < s.reps; j++ {
-					c <- net.NewClient().Do(r)
+					result := client.Do(r)
 					s.doDelay()
+					c <- result
 				}
 			} else {
 				for {
-					c <- net.NewClient().Do(r)
+					result := client.Do(r)
 					s.doDelay()
+					c <- result
 				}
 			}
-		}(ch, req)
+		}(ch, req, i)
 	}
 
 	if s.reps > 0 {
@@ -186,6 +196,8 @@ func (s *Siego) runFile() error {
 
 	for i := 0; i < s.concurrent; i++ {
 		go func(c chan *net.Response, lines []string) {
+			client := net.NewClient(s.timeout)
+
 			if s.reps > 0 {
 				for j := 0; j < s.reps; j++ {
 					if s.internet {
@@ -194,8 +206,9 @@ func (s *Siego) runFile() error {
 
 					for _, line := range lines {
 						if r, e := s.requestFromLine(line); e == nil {
-							c <- net.NewClient().Do(r)
+							result := client.Do(r)
 							s.doDelay()
+							c <- result
 						}
 					}
 				}
@@ -207,8 +220,9 @@ func (s *Siego) runFile() error {
 
 					for _, line := range lines {
 						if r, e := s.requestFromLine(line); e == nil {
-							c <- net.NewClient().Do(r)
+							result := client.Do(r)
 							s.doDelay()
+							c <- result
 						}
 					}
 				}

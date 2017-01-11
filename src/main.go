@@ -85,15 +85,24 @@ func main() {
 			Name:  "benchmark, b",
 			Usage: "BENCHMARK: no delays between requests.",
 		},
+		cli.BoolFlag{
+			Name:  "xml, x",
+			Usage: "Use XML output.",
+		},
+		cli.IntFlag{
+			Name:  "timeout",
+			Value: 1,
+			Usage: "Request timeout in seconds.",
+		},
 	}
 
 	app.Run(os.Args)
 }
 
 func actionRun(c *cli.Context) error {
-	siego := siego.NewSiego(c)
+	s := siego.NewSiego(c)
 
-	err := siego.Validate()
+	err := s.Validate()
 	if err != nil {
 		return err
 	}
@@ -104,12 +113,12 @@ func actionRun(c *cli.Context) error {
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		<-ch
-		siego.GetStats()
+		s.GetStats()
 		os.Exit(1)
 	}()
 
-	siego.Run()
-	siego.GetStats()
+	s.Run()
+	s.GetStats()
 
 	return nil
 }

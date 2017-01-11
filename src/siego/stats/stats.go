@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"../net"
+	"strings"
 )
 
 // Stats - Siego stats structure
@@ -70,11 +71,18 @@ func (s *Stats) AddResponse(r *net.Response) {
 
 // String - Converts object to string
 func (s *Stats) String() string {
-	return s.getMainTable() + s.getResponseCodesTable() + s.getPercentilesTable()
+	return s.getMainTable(false) + s.getResponseCodesTable(false) + s.getPercentilesTable(false)
+}
+
+// Xxml - Converts object to XML string
+func (s *Stats) Xml() string {
+	format := "<result>%s<response_codes>%s</response_codes><percentiles>%s</percentiles></result>"
+
+	return fmt.Sprintf(format, s.getMainTable(true), s.getResponseCodesTable(true), s.getPercentilesTable(true))
 }
 
 // Get main data table
-func (s *Stats) getMainTable() (result string) {
+func (s *Stats) getMainTable(isXml bool) (result string) {
 	elapsed := time.Since(s.start)
 
 	sorts := []string{
@@ -107,34 +115,52 @@ func (s *Stats) getMainTable() (result string) {
 	}
 
 	for _, title := range sorts {
-		result = result + s.stringRow(title, rows[title])
+		if isXml {
+			result = result + s.xmlRow(title, rows[title])
+		} else {
+			result = result + s.stringRow(title, rows[title])
+		}
 	}
 
 	return result
 }
 
 // Get response codes table
-func (s *Stats) getResponseCodesTable() (result string) {
-	result = result + "\r\n" + s.stringRow("Response codes", "")
+func (s *Stats) getResponseCodesTable(isXml bool) (result string) {
+	if !isXml {
+		result = result + "\r\n" + s.stringRow("Response codes", "")
+	}
+
 	for key, value := range s.codes {
-		result = result + s.stringRow(fmt.Sprintf("HTTP_%d", key), value)
+		if isXml {
+			result = result + s.xmlRow(fmt.Sprintf("HTTP_%d", key), value)
+		} else {
+			result = result + s.stringRow(fmt.Sprintf("HTTP_%d", key), value)
+		}
 	}
 
 	return result
 }
 
 // Get response time percentiles table
-func (s *Stats) getPercentilesTable() (result string) {
-	result = result + "\r\n" + s.stringRow("Response time percentiles", "")
+func (s *Stats) getPercentilesTable(isXml bool) (result string) {
+	if !isXml {
+		result = result + "\r\n" + s.stringRow("Response time percentiles", "")
+	}
+
 	sort.Float64s(s.times)
 	for i := 10; i < 100; i += 10 {
 		index := math.Floor(float64(len(s.times)) * (float64(i) / float64(100)))
 
 		if len(s.times) > int(index) {
 			value := fmt.Sprintf("%0.4fs", s.times[int(index)])
-			title := fmt.Sprintf("%d%%", i)
+			title := fmt.Sprintf("p%d", i)
 
-			result = result + s.stringRow(title, value)
+			if isXml {
+				result = result + s.xmlRow(title, value)
+			} else {
+				result = result + s.stringRow(title, value)
+			}
 		}
 	}
 
@@ -144,4 +170,12 @@ func (s *Stats) getPercentilesTable() (result string) {
 // Get pretty printed row
 func (s *Stats) stringRow(title string, value interface{}) string {
 	return fmt.Sprintf("%30s: %v\r\n", title, value)
+}
+
+// Get xml-formatted row
+func (s *Stats) xmlRow(title string, value interface{}) string {
+	title = strings.Replace(title, " ", "_", -1)
+	title = strings.ToLower(title)
+
+	return fmt.Sprintf("<%s>%v</%s>", title, value, title)
 }
