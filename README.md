@@ -25,22 +25,25 @@ Optionally to create Debian package
     $ siego -h
 
     GLOBAL OPTIONS:
-        --concurrent value, -c value    CONCURRENT users. (default: 10)
-        --delay value, -d value         Time DELAY, random delay before each requst between 1 and NUM. (NOT COUNTED IN STATS) (default: 1)
-        --reps value, -r value          REPS, number of times to run the test. (default: 0)
-        --url value, -u value           URL to test.
-        --file value, -f value          FILE, select a specific URLS FILE.
-        --log value, -l value           LOG to FILE. (default: "/var/siege.log")
-        --time value, -t value          TIMED testing where "m" is modifier s, m, or h. Ex: --time=1h, one hour test.
-        --header value, -H value        Add a header to request (can be many)
-        --user-agent value, -A value    Sets User-Agent in request
-        --content-type value, -T value  Sets Content-Type in request
-        --get, -g                       Use GET method.
-        --post, -p                      Use POST method.
-        --internet, -i                  INTERNET user simulation, hits URLs randomly.
-        --benchmark, -b                 BENCHMARK: no delays between requests.
-        --help, -h                      show help
-        --version, -v                   print the version
+       --concurrent value, -c value    CONCURRENT users. (default: 10)
+       --delay value, -d value         Time DELAY, random delay before each requst between 1 and NUM. (NOT COUNTED IN STATS) (default: 1)
+       --reps value, -r value          REPS, number of times to run the test. (default: 0)
+       --url value, -u value           URL to test.
+       --file value, -f value          FILE, select a specific URLS FILE.
+       --log value, -l value           LOG to FILE. (default: "/var/siege.log")
+       --time value, -t value          TIMED testing where "m" is modifier s, m, or h. Ex: --time=1h, one hour test.
+       --header value, -H value        Add a header to request (can be many)
+       --user-agent value, -A value    Sets User-Agent in request
+       --content-type value, -T value  Sets Content-Type in request
+       --get, -g                       Use GET method.
+       --post, -p                      Use POST method.
+       --internet, -i                  INTERNET user simulation, hits URLs randomly.
+       --benchmark, -b                 BENCHMARK: no delays between requests.
+       --xml, -x                       Use XML output.
+       --timeout value                 Request timeout in seconds. (default: 1)
+       --help, -h                      show help
+       --version, -v                   print the version
+
 	
 ## Statistics output example
 
