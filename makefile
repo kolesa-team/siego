@@ -32,7 +32,6 @@ strip: $(CURDIR)/out/$(APP_NAME)
 deb: $(CURDIR)/out/$(APP_NAME)
 	mkdir $(DEBIAN_TMP)
 	mkdir -p $(DEBIAN_TMP)/usr/local/bin
-	install -m 644 $(CURDIR)/data/config.cfg $(DEBIAN_TMP)/etc/$(APP_NAME)
 	fpm -n $(APP_NAME) \
 		-v $(VERSION) \
 		-t deb \
