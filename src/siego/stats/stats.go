@@ -106,7 +106,7 @@ func (s *Stats) getMainTable(isXml bool) (result string) {
 		"Data transferred":        fmt.Sprintf("%0.4fMb", float64(s.bytes)/(1024*1024)),
 		"Response time":           fmt.Sprintf("%0.4fs", elapsed.Seconds()/float64(s.total)),
 		"Transaction rate":        fmt.Sprintf("%0.4f/s", float64(s.total)/elapsed.Seconds()),
-		"Throughput":              fmt.Sprintf("%0.4fMb/s", float64(s.bytes)/elapsed.Seconds()),
+		"Throughput":              fmt.Sprintf("%0.4fMb/s", (float64(s.bytes)/elapsed.Seconds())/(1024.0*1024.0)),
 		"Concurrency":             fmt.Sprintf("%0.4f", s.totalTime.Seconds()/elapsed.Seconds()),
 		"Successful transactions": fmt.Sprintf("%0.0d", s.success),
 		"Failed transactions":     fmt.Sprintf("%0.0d", s.fail),

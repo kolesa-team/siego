@@ -21,7 +21,7 @@ func main() {
 
 	app.Name = "siego"
 	app.Usage = "Regression test and benchmark utility"
-	app.Version = "0.0.2"
+	app.Version = "0.0.3"
 	app.Author = "Igor Borodikhin"
 	app.Email = "iborodikhin@gmail.com"
 	app.Action = actionRun
